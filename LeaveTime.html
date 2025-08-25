@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta name="author" content="Sami Alsulaymi">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Leave Time (8h 23m)</title>
@@ -24,7 +25,8 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>Leave Time (Workday = 8h 23m)</h1>
+    <h1>Flexible Hours Calculator</h1>
+    <div class="muted" style="margin:-6px 0 14px">Workday = 8h 23m</div>
 
     <div class="card">
       <label>Arrival time</label>
@@ -71,10 +73,17 @@
     var arrival = document.getElementById('arrival');
     var leave = document.getElementById('leave');
 
+    var FIXED_LEAVE = "4:30 PM";
+
     document.getElementById('calcBtn').addEventListener('click', function(){
       var ar = arrival.value || nowHHMM();
       arrival.value = ar;
+      var mins = timeToMinutes(ar);        // دقائق من منتصف الليل
+      if (mins > (8*60 + 7)) {             // بعد 08:07
+        leave.textContent = FIXED_LEAVE;   // خروج ثابت 4:30 PM
+      } else {
       leave.textContent = addMinutes(ar, WORK_MINUTES);
+      }
     });
 
     document.getElementById('nowBtn').addEventListener('click', function(){ arrival.value = nowHHMM(); });
@@ -89,15 +98,14 @@
   </script>
   <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js');
-  }
-  </script>
-  <script>
-  if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('./service-worker.js');
     });
   }
   </script>
+  <p class="muted" style="text-align:center;margin-top:14px;font-size:12px">
+    Created by :
+    <a href="mailto:sami.alsulaymi@gmail.com?subject=LeaveTime%20App%20Inquiry" style="color:#9ec1ff;text-decoration:none">Sami Alsulaymi</a>
+  </p>
 </body>
 </html>
